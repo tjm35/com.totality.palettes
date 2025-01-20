@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -22,8 +23,19 @@ namespace Totality.Palettes.Editor
             {
                 DrawPropertiesExcluding(serializedObject, "m_Script");
 
+                if (GUILayout.Button("Add Half Bright Colors"))
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    foreach (PaletteAsset paletteAsset in targets)
+                    {
+                        AddHalfs(paletteAsset);
+                    }
+                    serializedObject.Update();
+                }
+                
                 var oldEnabled = GUI.enabled;
                 GUI.enabled = true;
+
                 if (GUILayout.Button("Export Color Preset Library"))
                 {
                     foreach (PaletteAsset paletteAsset in targets)
@@ -55,6 +67,23 @@ namespace Totality.Palettes.Editor
             }
         }
 
+        private void AddHalfs(PaletteAsset palette)
+        {
+            var prevColourCount = palette.Colors.Length;
+            Array.Resize(ref palette.Colors, prevColourCount * 2);
+            var newColourCount = prevColourCount;
+            for (int i = 0; i < prevColourCount; ++i)
+            {
+                var oldColour = palette.Colors[i];
+                var newColour = new Color(oldColour.r / 2, oldColour.g / 2, oldColour.b / 2, oldColour.a);
+                if (palette.Colors.All(c => !c.Approximately(newColour)))
+                {
+                    palette.Colors[newColourCount++] = newColour;
+                }
+            }
+            Array.Resize(ref palette.Colors, newColourCount);
+        }
+
         private void UpdateIcon()
         {
             foreach (PaletteAsset paletteAsset in targets)
@@ -82,7 +111,7 @@ namespace Totality.Palettes.Editor
             {
                 var element= presets.GetArrayElementAtIndex(i);
                 var colorProp = element.FindPropertyRelative("m_Color");
-                colorProp.colorValue = palette.Colors[i];
+                colorProp.colorValue = new Color(palette.Colors[i].r, palette.Colors[i].g, palette.Colors[i].b, 1);
             }
 
             so.ApplyModifiedPropertiesWithoutUndo();
