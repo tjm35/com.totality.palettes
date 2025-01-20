@@ -1,0 +1,6 @@
+{
+  "name": "com.totality.palettes",
+  "version": "0.1.0",
+  "displayName": "Totality Palettes",
+  "description": "Package for importing and managing palettes as scriptable objects and swatches.\n\nSupports JASC-PAL files, GIMP GPL files, and palettes stored as images (image filename must begin \"PAL_\")."
+}

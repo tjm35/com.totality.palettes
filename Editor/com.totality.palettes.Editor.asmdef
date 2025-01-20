@@ -1,0 +1,18 @@
+{
+    "name": "com.totality.palettes.Editor",
+    "rootNamespace": "Totality.Palettes.Editor",
+    "references": [
+        "GUID:eefab3e04eadd3c4299f2ffc6ef6df82"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
